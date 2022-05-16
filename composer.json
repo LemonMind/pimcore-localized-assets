@@ -1,6 +1,6 @@
 {
   "name": "lemonmind/pimcore-localized-assets",
-  "description": "Pimcore Localized Assets - localize your assets",
+  "description": "Pimcore Localized Assets - localize your assets with no duplicating files",
   "type": "pimcore-bundle",
   "license": "GPL-3.0-or-later",
   "authors": [
@@ -21,7 +21,7 @@
   "extra": {
     "pimcore": {
       "bundles": [
-        "PimcoreLocalizedAssetsBundle"
+        "Lemonmind\\PimcoreLocalizedAssetsBundle\\PimcoreLocalizedAssetsBundle"
       ]
     }
   },
