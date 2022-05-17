@@ -5,3 +5,8 @@ services:
         public: false
 
     Lemonmind\PimcoreLocalizedAssetsBundle\Configuration\Configuration: ~
+
+    Lemonmind\PimcoreLocalizedAssetsBundle\Installer:
+        public: true
+        arguments:
+            $bundle: "@=service('kernel').getBundle('PimcoreLocalizedAssetsBundle')"
