@@ -4,6 +4,11 @@ services:
         autoconfigure: true
         public: false
 
+    Lemonmind\PimcoreLocalizedAssetsBundle\Controller\:
+        resource: '../../Controller/*'
+        public: true
+        tags: [ 'controller.service_arguments' ]
+
     Lemonmind\PimcoreLocalizedAssetsBundle\Configuration\Configuration: ~
 
     Lemonmind\PimcoreLocalizedAssetsBundle\Installer:

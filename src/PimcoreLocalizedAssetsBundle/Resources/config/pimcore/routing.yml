@@ -1,0 +1,5 @@
+pimcore_localized_assets:
+    resource: "@PimcoreLocalizedAssetsBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
