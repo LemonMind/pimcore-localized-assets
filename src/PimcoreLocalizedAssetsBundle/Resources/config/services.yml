@@ -15,3 +15,14 @@ services:
         public: true
         arguments:
             $bundle: "@=service('kernel').getBundle('PimcoreLocalizedAssetsBundle')"
+
+    Lemonmind\PimcoreLocalizedAssetsBundle\EventListener\FrontendListener:
+        tags:
+            - { name: kernel.event_listener, event: pimcore.frontend.path.asset.image.thumbnail, method: assetImageThumbnail }
+            - { name: kernel.event_listener, event: pimcore.frontend.path.asset.video.image-thumbnail, method: assetVideoImageThumbnail }
+            - { name: kernel.event_listener, event: pimcore.frontend.path.asset.video.thumbnail, method: assetVideoThumbnail }
+            - { name: kernel.event_listener, event: pimcore.frontend.path.asset.document.image-thumbnail, method: assetDocumentImageThumbnail }
+            - { name: kernel.event_listener, event: pimcore.frontend.path.asset, method: assetPath }
+
+
+

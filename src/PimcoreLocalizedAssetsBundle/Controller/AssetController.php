@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Pimcore\Db;
 
 /**
  * @Route(
@@ -22,17 +23,15 @@ class AssetController extends FrontendController
 {
     /**
      * @Route("/{path}", requirements={"path"="^(?!/admin)(.+?)\.((?:css|js)(?:\.map)?|jpe?g|gif|png|svgz?|eps|exe|gz|zip|mp\d|ogg|ogv|webm|pdf|docx?|xlsx?|pptx?)$"})
-     *
-     * @throws NotFoundHttpException
      */
     public function singleAction(Request $request): Response
     {
         $path = $request->getPathInfo();
 
-        try {
+        $asset = $this->getByMetaName($path);
+
+        if (null === $asset) {
             $asset = Asset::getByPath($path);
-        } catch (Exception $e) {
-            throw new NotFoundHttpException();
         }
 
         if ($asset instanceof Asset) {
@@ -47,5 +46,28 @@ class AssetController extends FrontendController
         }
 
         throw new NotFoundHttpException();
+    }
+
+    private function getByMetaName(string $path): Asset|null
+    {
+        $pathInfo = pathinfo($path);
+        $queryBuilder = Db::getConnection()->createQueryBuilder();
+
+        try {
+            $asset = $queryBuilder->select('cid')
+                ->from('assets_metadata')
+                ->where('name = "localized_asset_name"')
+                ->andWhere('type = "input"')
+                ->andWhere('data = "' . $pathInfo['filename'] . '"')
+                ->execute()->fetchAllAssociative();
+        } catch (\Doctrine\DBAL\Driver\Exception|\Doctrine\DBAL\Exception $e) {
+            return null;
+        }
+
+        if (!empty($asset) && array_key_exists('cid', $asset[0])) {
+            return Asset::getById($asset[0]['cid']);
+        }
+
+        return null;
     }
 }
