@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Lemonmind\PimcoreLocalizedAssetsBundle\Controller;
 
-use Exception;
+use Lemonmind\PimcoreLocalizedAssetsBundle\Services\AssetService;
 use Pimcore\Controller\FrontendController;
 use Pimcore\Model\Asset;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Pimcore\Db;
 
 /**
  * @Route(
@@ -28,7 +27,7 @@ class AssetController extends FrontendController
     {
         $path = $request->getPathInfo();
 
-        $asset = $this->getByMetaName($path);
+        $asset = AssetService::getByMetaName($path);
 
         if (null === $asset) {
             $asset = Asset::getByPath($path);
@@ -46,28 +45,5 @@ class AssetController extends FrontendController
         }
 
         throw new NotFoundHttpException();
-    }
-
-    private function getByMetaName(string $path): Asset|null
-    {
-        $pathInfo = pathinfo($path);
-        $queryBuilder = Db::getConnection()->createQueryBuilder();
-
-        try {
-            $asset = $queryBuilder->select('cid')
-                ->from('assets_metadata')
-                ->where('name = "localized_asset_name"')
-                ->andWhere('type = "input"')
-                ->andWhere('data = "' . $pathInfo['filename'] . '"')
-                ->execute()->fetchAllAssociative();
-        } catch (\Doctrine\DBAL\Driver\Exception|\Doctrine\DBAL\Exception $e) {
-            return null;
-        }
-
-        if (!empty($asset) && array_key_exists('cid', $asset[0])) {
-            return Asset::getById($asset[0]['cid']);
-        }
-
-        return null;
     }
 }
