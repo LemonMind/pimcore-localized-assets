@@ -2,6 +2,7 @@
 
 namespace Lemonmind\PimcoreLocalizedAssetsBundle\Services;
 
+use Doctrine\DBAL\ForwardCompatibility\Result;
 use Pimcore\Db;
 use Pimcore\Model\Asset;
 use Doctrine\DBAL\Exception;
@@ -11,16 +12,47 @@ class AssetService
 {
     public static function getByMetaName(string $path): Asset|null
     {
-        $pathInfo = pathinfo($path);
         $queryBuilder = Db::getConnection()->createQueryBuilder();
+        $filename = pathinfo($path, PATHINFO_FILENAME);
+        $dirname = pathinfo($path, PATHINFO_DIRNAME);
+
+        try {
+            $possibleAssetIds = $queryBuilder->select('id')
+                ->from('assets')
+                ->where($queryBuilder->expr()->like('path', '"%' . $dirname . '%"'))
+                ->execute();
+            if ($possibleAssetIds instanceof Result) {
+                $possibleAssetIds = $possibleAssetIds->fetchAllAssociative();
+            }
+        } catch (Exception|DriverException $e) {
+            return null;
+        }
+
+        if (empty($possibleAssetIds)) {
+            return null;
+        }
+
+        $ids = [];
+        foreach ($possibleAssetIds as $id) {
+            if (array_key_exists('id', $id)) {
+                $ids[] = $id['id'];
+            }
+        }
+
+        $queryBuilder->resetQueryParts(['select', 'from', 'where']);
 
         try {
             $asset = $queryBuilder->select('cid')
                 ->from('assets_metadata')
-                ->where('name = "localized_asset_name"')
-                ->andWhere('type = "input"')
-                ->andWhere('data = "' . $pathInfo['filename'] . '"')
-                ->execute()->fetchAllAssociative();
+                ->where($queryBuilder->expr()->eq('name', '"localized_asset_name"'))
+                ->andWhere($queryBuilder->expr()->eq('type', '"input"'))
+                ->andWhere($queryBuilder->expr()->eq('data', '"' . $filename . '"'))
+                ->andWhere($queryBuilder->expr()->in('cid', $ids))
+                ->execute();
+
+            if ($asset instanceof Result) {
+                $asset = $asset->fetchAllAssociative();
+            }
         } catch (Exception|DriverException $e) {
             return null;
         }
