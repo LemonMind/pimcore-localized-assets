@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lemonmind\PimcoreLocalizedAssetsBundle\Services;
 
+use Doctrine\DBAL\Driver\Exception as DriverException;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\ForwardCompatibility\Result;
 use Pimcore\Db;
 use Pimcore\Model\Asset;
-use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Driver\Exception as DriverException;
 
 class AssetService
 {
@@ -21,6 +23,7 @@ class AssetService
                 ->from('assets')
                 ->where($queryBuilder->expr()->like('path', '"%' . $dirname . '%"'))
                 ->execute();
+
             if ($possibleAssetIds instanceof Result) {
                 $possibleAssetIds = $possibleAssetIds->fetchAllAssociative();
             }
@@ -28,11 +31,12 @@ class AssetService
             return null;
         }
 
-        if (empty($possibleAssetIds)) {
+        if (empty($possibleAssetIds) || !is_array($possibleAssetIds)) {
             return null;
         }
 
         $ids = [];
+
         foreach ($possibleAssetIds as $id) {
             if (array_key_exists('id', $id)) {
                 $ids[] = $id['id'];
@@ -57,7 +61,11 @@ class AssetService
             return null;
         }
 
-        if (!empty($asset) && array_key_exists('cid', $asset[0])) {
+        if (
+            is_array($asset) &&
+            isset($asset[0]) &&
+            array_key_exists('cid', $asset[0])
+        ) {
             return Asset::getById($asset[0]['cid']);
         }
 

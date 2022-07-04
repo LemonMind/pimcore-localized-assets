@@ -14,8 +14,7 @@ class FrontendListener
         $asset = $filesystemPath->getSubject()->getAsset();
         $currentSrc = $filesystemPath->getArgument('frontendPath');
 
-        if (null === $asset)
-        {
+        if (null === $asset) {
             return;
         }
 
@@ -51,8 +50,7 @@ class FrontendListener
         $asset = $frontendPath->getSubject();
         $currentSrc = $frontendPath->getArgument('frontendPath');
 
-        if (null === $asset)
-        {
+        if (null === $asset) {
             return;
         }
 

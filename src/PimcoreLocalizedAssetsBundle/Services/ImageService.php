@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lemonmind\PimcoreLocalizedAssetsBundle\Services;
 
 class ImageService
