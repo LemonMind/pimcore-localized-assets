@@ -14,8 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route(
- *     requirements={"extension"="jpg|png|jpeg|webp|svg|tif|tiff|bmp|gif|eps"},
- *     methods={"GET","OPTIONS"},
+ *     methods={"GET","OPTIONS"}
  * )
  */
 class AssetController extends FrontendController
