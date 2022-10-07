@@ -17,7 +17,7 @@ class AssetServiceTest extends KernelTestCase
         self::$asset = new Asset();
         self::$asset->setFilename('test-asset.png');
         self::$asset->setParentId(1);
-        self::$asset->setData(file_get_contents('https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png'));
+        self::$asset->setData(file_get_contents('bundles/pimcore-localized-assets/src/PimcoreLocalizedAssetsBundle/Tests/img/img.png'));
         self::$asset->addMetadata('localized_asset_name', 'input', 'name', 'en');
 
         self::$asset->beginTransaction();
