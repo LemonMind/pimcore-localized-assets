@@ -29,7 +29,8 @@
   },
   "require-dev": {
     "phpstan/phpstan": "^1.4",
-    "friendsofphp/php-cs-fixer": "^3.6"
+    "friendsofphp/php-cs-fixer": "^3.6",
+    "symfony/phpunit-bridge": "^6.1"
   },
   "scripts": {
     "fix": [
