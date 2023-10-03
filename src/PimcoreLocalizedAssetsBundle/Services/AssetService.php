@@ -6,7 +6,7 @@ namespace Lemonmind\PimcoreLocalizedAssetsBundle\Services;
 
 use Doctrine\DBAL\Driver\Exception as DriverException;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\ForwardCompatibility\Result;
+use Doctrine\DBAL\Result;
 use Pimcore\Db;
 use Pimcore\Model\Asset;
 
@@ -22,7 +22,7 @@ class AssetService
             $possibleAssetIds = $queryBuilder->select('id')
                 ->from('assets')
                 ->where($queryBuilder->expr()->like('path', '"%' . $dirname . '%"'))
-                ->execute();
+                ->executeQuery();
 
             if ($possibleAssetIds instanceof Result) {
                 $possibleAssetIds = $possibleAssetIds->fetchAllAssociative();
@@ -52,7 +52,7 @@ class AssetService
                 ->andWhere($queryBuilder->expr()->eq('type', '"input"'))
                 ->andWhere($queryBuilder->expr()->eq('data', '"' . $filename . '"'))
                 ->andWhere($queryBuilder->expr()->in('cid', $ids))
-                ->execute();
+                ->executeQuery();
 
             if ($asset instanceof Result) {
                 $asset = $asset->fetchAllAssociative();
