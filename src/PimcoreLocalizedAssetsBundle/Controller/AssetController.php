@@ -25,7 +25,7 @@ class AssetController extends FrontendController
     public function singleAction(Request $request): Response
     {
         $path = $request->getPathInfo();
-
+        
         $asset = AssetService::getByMetaName($path);
 
         if (null === $asset) {
@@ -39,10 +39,10 @@ class AssetController extends FrontendController
             $response->setPublic();
             $response->setMaxAge(60 * 60 * 24 * 14);
             $response->headers->set('Content-Type', $asset->getMimeType());
-
+            
             return $response;
         }
-
+        
         throw new NotFoundHttpException();
     }
 }

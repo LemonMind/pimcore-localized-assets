@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Lemonmind\PimcoreLocalizedAssetsBundle\DependencyInjection;
 
 use Exception;
-use Lemonmind\PimcoreLocalizedAssetsBundle\Configuration\Configuration as BundleConfiguration;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Lemonmind\PimcoreLocalizedAssetsBundle\Configuration\Configuration as BundleConfiguration;
 
 class PimcoreLocalizedAssetsExtension extends Extension
 {

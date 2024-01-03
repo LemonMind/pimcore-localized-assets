@@ -9,7 +9,8 @@ class ImageService
     public static function generatePimcoreImageSrc(string $currentSrc, string $newFileName): string
     {
         $currentFileName = pathinfo($currentSrc, PATHINFO_FILENAME);
+        $separatedFileName = explode('.' , $currentFileName);
 
-        return str_replace($currentFileName, $newFileName, $currentSrc);
+        return str_replace($separatedFileName[0], $newFileName, $currentSrc);
     }
 }

@@ -5,7 +5,13 @@ Pimcore Bundle to localize your assets with same file.
 ### Installation
 ```bash
 composer require lemonmind/pimcore-localized-assets
-bin/console pimcore:bundle:enable PimcoreLocalizedAssetsBundle
+```
+```bash
+// config/bundles.php
+
+PimcoreLocalizedAssetsBundle::class => ['all' => true]
+```
+```bash
 bin/console pimcore:bundle:install PimcoreLocalizedAssetsBundle
 ```
 After installation predefined assets metadata definitions with name "localized_asset_name" should be visible. Each language should has its own entity.  

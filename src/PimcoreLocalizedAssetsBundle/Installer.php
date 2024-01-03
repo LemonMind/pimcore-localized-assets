@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Lemonmind\PimcoreLocalizedAssetsBundle;
 
 use Exception;
-use Pimcore\Extension\Bundle\Installer\SettingsStoreAwareInstaller;
-use Pimcore\Model\Metadata\Predefined;
 use Pimcore\Tool;
+use Pimcore\Model\Metadata\Predefined;
+use Pimcore\Extension\Bundle\Installer\SettingsStoreAwareInstaller;
 
 class Installer extends SettingsStoreAwareInstaller
 {

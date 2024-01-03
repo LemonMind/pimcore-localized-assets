@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Lemonmind\PimcoreLocalizedAssetsBundle\EventListener;
 
 use Lemonmind\PimcoreLocalizedAssetsBundle\Services\ImageService;
+use Pimcore\Model\Asset;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class FrontendListener
